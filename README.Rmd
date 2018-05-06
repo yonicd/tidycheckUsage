@@ -1,0 +1,75 @@
+---
+output: github_document
+always_allow_html: yes
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "tools/readme/README-"
+)
+```
+
+# tidycheckUsage
+
+When using magrittr pipes or ggplot2 reading the objects that you forgot to `enquo` is a pain. These functions can be run prior to `devtools::check` to return a `data.frame` containing all the warnings created when `check` runs `codetools::checkUsage`.
+
+## Installation
+
+You can install tidynm from ghe with:
+
+```{r gh-installation, eval = FALSE}
+remotes::install_github('yonicd/tidycheckUsage')
+
+```
+
+## Examples
+
+### Installed Packages
+
+```{r}
+library(tidycheckUsage)
+
+```
+ 
+```{r,eval=FALSE}
+install.packages(c('dplyr'))
+```
+
+```{r}
+library(dplyr,warn.conflicts = FALSE,quietly = TRUE)
+
+checkUsagePackage_dataframe('dplyr')
+```
+
+### Built Packages
+
+```{r,eval=FALSE}
+system('git clone https://github.com/hrbrmstr/slackr.git')
+devtools::install('slackr')
+
+```
+ 
+```{r}
+checkUsagePackage_dataframe('slackr')
+```
+ 
+### Functions in Environment
+ 
+```{r}
+myfun <- function(x){
+  
+  ret <- mtcars%>%
+    mutate(mpg2=mpg*x)
+  
+  ret <- ret%>%
+    dplyr::mutate(mpg3=mpg2^2)
+  
+}
+
+checkUsage_dataframe(fun = myfun)
+
+```
