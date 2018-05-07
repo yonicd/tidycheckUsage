@@ -9,7 +9,7 @@
 #' report(x)
 #' }
 #' @export
-report <- function(x = checkUsagePackage_dataframe(),
+report <- function(x = tidycheckUsagePackage(),
                    file = file.path(tempdir(), paste0(get_pack_name(x), "-report.html")),
                    browse = interactive()) {
   
@@ -37,7 +37,7 @@ report <- function(x = checkUsagePackage_dataframe(),
             shiny::tabPanel("Source", addHighlight(renderSourceTable(data$full)))
                                     )
                                     ),
-    title = paste(attr(x, "package")$package, "Usage"))
+  title = paste(attr(x, "package")$package, "Usage"))
   
   htmltools::save_html(ui, file)
   
@@ -50,7 +50,6 @@ report <- function(x = checkUsagePackage_dataframe(),
   }
 
 to_shiny_data <- function(x) {
-  coverages <- per_line(x)
   
   res <- list()
   

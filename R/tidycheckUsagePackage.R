@@ -8,7 +8,8 @@
 #' @rdname checkUsagePackagedf
 #' @export 
 #' @importFrom codetools checkUsagePackage
-checkUsagePackage_dataframe <- function(pack,...){
+tidycheckUsagePackage <- function(pack,...){
+
   xx <- NULL
 
   breadcrumb__ <- TRUE
@@ -17,7 +18,19 @@ checkUsagePackage_dataframe <- function(pack,...){
     library(pack,character.only = TRUE)
 
   codetools::checkUsagePackage(pack,report=as_dataframe,...)
-  
+
+  if(!is.null(xx)){
+    if(nzchar(xx$file[1])){
+      xx <- parse_package(xx)
+    }else{
+      names(xx)[3] <- 'line'
+      xx$line2 <- NULL
+      xx$col1 <- ''
+      xx$col2 <- ''
+      xx <- xx[,c('file','line','object','col1','col2','path','fun','warning')]
+    }
+  }
+
   attr(xx,'package') <- pack
   
   return(xx)
