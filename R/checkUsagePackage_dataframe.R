@@ -11,6 +11,8 @@
 checkUsagePackage_dataframe <- function(pack,...){
   xx <- NULL
 
+  breadcrumb__ <- TRUE
+  
   if(!pack%in%loadedNamespaces())
     library(pack,character.only = TRUE)
 

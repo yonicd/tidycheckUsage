@@ -24,6 +24,8 @@
 checkUsage_dataframe <- function(fun,...){
   xx <- NULL
 
+  breadcrumb__ <- TRUE
+  
   codetools::checkUsage(fun,report=as_dataframe,...)
 
   if(!is.null(xx))

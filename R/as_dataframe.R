@@ -51,14 +51,12 @@ as_dataframe <- function(x){
    warning          = msg,
    stringsAsFactors = FALSE)
 
-  toenv <- sys.frames()[[1]]
+  breadcrumb <- which(sapply(sys.frames(),function(x) length(ls(pattern = 'breadcrumb__',envir = x))>0))
 
-  if(exists('xx',envir = toenv)){
-    xx <- get('xx',envir = toenv)
-    xx <- rbind(xx,ret)
-  }else{
-    xx <- ret
-  }
+  toenv <- sys.frames()[[breadcrumb]]
 
+  xx <- get('xx',envir = toenv)
+  xx <- rbind(xx,ret)
+  
   assign('xx',xx,envir = toenv)
 }
