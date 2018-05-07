@@ -3,7 +3,7 @@ library(tidycheckUsage)
 
 testthat::test_that('package',{
   
-  x <- tidycheckUsage::checkUsagePackage_dataframe(pack = 'tidytext')
+  x <- tidycheckUsage::tidycheckUsagePackage(pack = 'tidytext')
   
   expect_s3_class(x,'data.frame')
   expect_equal(x$file[1],'')

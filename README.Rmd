@@ -39,10 +39,10 @@ library(tidycheckUsage)
 install.packages(c('dplyr'))
 ```
 
-```{r}
+```{r package}
 library(dplyr,warn.conflicts = FALSE,quietly = TRUE)
 
-checkUsagePackage_dataframe('dplyr')
+knitr::kable(tidycheckUsagePackage('dplyr'))
 ```
 
 ### Built Packages
@@ -53,13 +53,14 @@ devtools::install('slackr')
 
 ```
  
-```{r}
-checkUsagePackage_dataframe('slackr')
+```{r builtpkg,eval=FALSE}
+tidycheckUsagePackage('slackr')
 ```
  
 ### Functions in Environment
  
-```{r}
+```{r,eval=FALSE}
+
 myfun <- function(x){
   
   ret <- mtcars%>%
@@ -70,6 +71,6 @@ myfun <- function(x){
   
 }
 
-checkUsage_dataframe(fun = myfun)
+tidycheckUsage(fun = myfun)
 
 ```

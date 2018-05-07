@@ -1,3 +1,6 @@
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
 # tidycheckUsage
 
 When using magrittr pipes or ggplot2 reading the objects that you forgot
@@ -7,7 +10,7 @@ created when `check` runs `codetools::checkUsage`.
 
 ## Installation
 
-You can install tidycheckUsage with:
+You can install tidynm from ghe with:
 
 ``` r
 remotes::install_github('yonicd/tidycheckUsage')
@@ -28,21 +31,20 @@ install.packages(c('dplyr'))
 ``` r
 library(dplyr,warn.conflicts = FALSE,quietly = TRUE)
 
-checkUsagePackage_dataframe('dplyr')
+knitr::kable(tidycheckUsagePackage('dplyr'))
 ```
-|file |path |line1 |line2 |fun                    |object      |warning                                                   |
-|:----|:----|:-----|:-----|:----------------------|:-----------|:---------------------------------------------------------|
-|     |     |      |      |as.tbl_cube.data.frame |dupe        |local variable ‘dupe’ assigned but may not be used        |
-|     |     |      |      |do.rowwise_df          |index       |local variable ‘index’ assigned but may not be used       |
-|     |     |      |      |fmt_cols               |cols        |local variable ‘cols’ assigned but may not be used        |
-|     |     |      |      |fmt_measures           |measures    |local variable ‘measures’ assigned but may not be used    |
-|     |     |      |      |fmt_pos_args           |args        |local variable ‘args’ assigned but may not be used        |
-|     |     |      |      |order_by               |type        |local variable ‘type’ assigned but may not be used        |
-|     |     |      |      |select_var             |type        |local variable ‘type’ assigned but may not be used        |
-|     |     |      |      |select_vars            |first_type  |local variable ‘first_type’ assigned but may not be used  |
-|     |     |      |      |switch_rename          |actual_type |local variable ‘actual_type’ assigned but may not be used |
 
-
+|file |line |object      |col1 |col2 |path |fun                    |warning                                                   |
+|:----|:----|:-----------|:----|:----|:----|:----------------------|:---------------------------------------------------------|
+|     |     |dupe        |     |     |     |as.tbl_cube.data.frame |local variable ‘dupe’ assigned but may not be used        |
+|     |     |index       |     |     |     |do.rowwise_df          |local variable ‘index’ assigned but may not be used       |
+|     |     |cols        |     |     |     |fmt_cols               |local variable ‘cols’ assigned but may not be used        |
+|     |     |measures    |     |     |     |fmt_measures           |local variable ‘measures’ assigned but may not be used    |
+|     |     |args        |     |     |     |fmt_pos_args           |local variable ‘args’ assigned but may not be used        |
+|     |     |type        |     |     |     |order_by               |local variable ‘type’ assigned but may not be used        |
+|     |     |type        |     |     |     |select_var             |local variable ‘type’ assigned but may not be used        |
+|     |     |first_type  |     |     |     |select_vars            |local variable ‘first_type’ assigned but may not be used  |
+|     |     |actual_type |     |     |     |switch_rename          |local variable ‘actual_type’ assigned but may not be used |
 ### Built Packages
 
 ``` r
@@ -51,17 +53,19 @@ devtools::install('slackr')
 ```
 
 ``` r
-checkUsagePackage_dataframe('slackr')
+tidycheckUsagePackage('slackr')
 ```
-|file         |path                                     |line1 |line2 |fun        |object   |warning                                                |
-|:------------|:----------------------------------------|:-----|:-----|:----------|:--------|:------------------------------------------------------|
-|slackr.R     |/Users/jonathans/projects/forks/slackr/R |41    |41    |slackr     |resp_ret |local variable ‘resp_ret’ assigned but may not be used |
-|slackr_bot.r |/Users/jonathans/projects/forks/slackr/R |57    |57    |slackr_bot |resp_ret |local variable ‘resp_ret’ assigned but may not be used |
-|slackr_bot.r |/Users/jonathans/projects/forks/slackr/R |57    |57    |slackrBot  |resp_ret |local variable ‘resp_ret’ assigned but may not be used |
+
+|file         |line |object   |col1 |col2 |path                                     |fun        |warning                                                |
+|:------------|:----|:--------|:----|:----|:----------------------------------------|:----------|:------------------------------------------------------|
+|slackr_bot.r |57   |resp_ret |3    |10   |/Users/jonathans/projects/forks/slackr/R |slackr_bot |local variable ‘resp_ret’ assigned but may not be used |
+|slackr_bot.r |57   |resp_ret |3    |10   |/Users/jonathans/projects/forks/slackr/R |slackrBot  |local variable ‘resp_ret’ assigned but may not be used |
+|slackr.R     |41   |resp_ret |3    |10   |/Users/jonathans/projects/forks/slackr/R |slackr     |local variable ‘resp_ret’ assigned but may not be used |
 
 ### Functions in Environment
 
 ``` r
+
 myfun <- function(x){
   
   ret <- mtcars%>%
@@ -72,13 +76,13 @@ myfun <- function(x){
   
 }
 
-checkUsage_dataframe(fun = myfun)
+tidycheckUsage(fun = myfun)
 ```
 
-|file |path |line1 |line2 |fun   |object |warning                                            |
-|:----|:----|:-----|:-----|:-----|:------|:--------------------------------------------------|
-|     |     |3     |4     |myfun |%>%    |no visible global function definition for ‘%>%’    |
-|     |     |3     |4     |myfun |mutate |no visible global function definition for ‘mutate’ |
-|     |     |3     |4     |myfun |mpg    |no visible binding for global variable ‘mpg’       |
-|     |     |6     |7     |myfun |%>%    |no visible global function definition for ‘%>%’    |
-|     |     |6     |7     |myfun |mpg2   |no visible binding for global variable ‘mpg2’      |
+|file |line |object |col1 |col2 |path |fun   |warning                                            |
+|:----|:----|:------|:----|:----|:----|:-----|:--------------------------------------------------|
+|     |3    |%>%    |16   |18   |     |myfun |no visible global function definition for ‘%>%’    |
+|     |4    |mpg    |17   |19   |     |myfun |no visible binding for global variable ‘mpg’       |
+|     |4    |mutate |5    |10   |     |myfun |no visible global function definition for ‘mutate’ |
+|     |6    |%>%    |13   |15   |     |myfun |no visible global function definition for ‘%>%’    |
+|     |7    |mpg2   |24   |27   |     |myfun |no visible binding for global variable ‘mpg2’      |
