@@ -7,7 +7,7 @@ created when `check` runs `codetools::checkUsage`.
 
 ## Installation
 
-You can install tidynm from ghe with:
+You can install tidycheckUsage with:
 
 ``` r
 remotes::install_github('yonicd/tidycheckUsage')
