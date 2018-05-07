@@ -17,5 +17,12 @@ checkUsagePackage_dataframe <- function(pack,...){
     library(pack,character.only = TRUE)
 
   codetools::checkUsagePackage(pack,report=as_dataframe,...)
+  
+  attr(xx,'package') <- pack
+  
   return(xx)
+}
+
+get_pack_name <- function(x) {
+  attr(x, "package") %||% "checkUsage"
 }
