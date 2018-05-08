@@ -4,7 +4,7 @@
 \alias{report}
 \title{Display checkUsage results using a standalone report}
 \usage{
-report(x = checkUsagePackage_dataframe(), file = file.path(tempdir(),
+report(x = tidycheckUsagePackage(), file = file.path(tempdir(),
   paste0(get_pack_name(x), "-report.html")), browse = interactive())
 }
 \arguments{
@@ -19,7 +19,7 @@ Display checkUsage results using a standalone report
 }
 \examples{
 \dontrun{
-x <- checkUsagePackage_dataframe()
+x <- tidycheckUsagePackage()
 report(x)
 }
 }

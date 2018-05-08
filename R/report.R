@@ -5,7 +5,7 @@
 #' @param browse whether to open a browser to view the report.
 #' @examples
 #' \dontrun{
-#' x <- checkUsagePackage_dataframe()
+#' x <- tidycheckUsagePackage()
 #' report(x)
 #' }
 #' @export
@@ -15,7 +15,7 @@ report <- function(x = tidycheckUsagePackage(),
   
   loadNamespace("shiny")
   
-  data <- to_shiny_data(x)
+  data <- to_shiny_data_(x)
   
   ui <- shiny::fluidPage(
     shiny::includeCSS(system.file("www/shiny.css", package = "tidycheckUsage")),
@@ -37,7 +37,7 @@ report <- function(x = tidycheckUsagePackage(),
             shiny::tabPanel("Source", addHighlight(renderSourceTable(data$full)))
                                     )
                                     ),
-  title = paste(attr(x, "package")$package, "Usage"))
+  title = paste(attr(x, "package"), "Usage"))
   
   htmltools::save_html(ui, file)
   
@@ -49,51 +49,66 @@ report <- function(x = tidycheckUsagePackage(),
   invisible(file)
   }
 
-to_shiny_data <- function(x) {
+to_shiny_data_ <- function(xx_) {
+  
+  xx_$short_path <- file.path(basename(xx_$path),xx_$file)
   
   res <- list()
   
-  res$full <- lapply(coverages,
-                     function(coverage) {
-                       lines <- coverage$file$file_lines
-                       values <- coverage$coverage
-                       values[is.na(values)] <- ""
-                       data.frame(
-                         line = seq_along(lines),
-                         source = lines,
-                         coverage = values,
-                         stringsAsFactors = FALSE)
-                     })
+  res$full <- lapply(split(xx_,xx_$short_path),function(sxx){
+    
+    path <- file.path(sxx$path[1],sxx$file[1])
+    
+    p <- parse(path)
+    
+    pp <- utils::getParseData(p)
+    
+    LINES <- readLines(path,warn = FALSE)
+    
+    a <- list(line   = seq_along(LINES),
+              source = LINES,
+              usage  = ifelse(grepl('^#',gsub('^\\s+','',LINES)),NA,-1)
+    )
+    
+    tbl <- table(sxx$line)
+    
+    a$usage[as.numeric(names(tbl))] <- as.numeric(tbl)
+    
+    a$usage[setdiff(pp$line1[grepl('^SYMBOL$|^SPECIAL$',pp$token)],as.numeric(names(tbl)))] <- 0
+    
+    a$usage[a$usage%in%c(NA,-1)] <- ""
+    
+    a$usage_type <- data.frame(table(sxx$line,sxx$warning_type),stringsAsFactors = FALSE)
+    a$usage_type$Var1 <- as.numeric(as.character(a$usage_type$Var1))
+    a$usage_type$Var2 <- as.character(a$usage_type$Var2)
+    
+    a
+    
+  })
   
-  nms <- names(coverages)
-  
-  # set a temp name if it doesn't exist
-  nms[nms == ""] <- "<text>"
-  
-  names(res$full) <- nms
-  
-  res$file_stats <- compute_file_stats(res$full)
+  res$file_stats <- compute_file_stats_(res$full)
   
   res$file_stats$File <- add_link(names(res$full))
   
-  res$file_stats <- sort_file_stats(res$file_stats)
+  res$file_stats <- sort_file_stats_(res$file_stats)
   
-  res$file_stats$Coverage <- add_color_box(res$file_stats$Coverage)
+  res$file_stats$Usage <- add_color_box(res$file_stats$Usage)
   
   res
 }
 
-compute_file_stats <- function(files) {
+compute_file_stats_ <- function(files) {
   do.call("rbind",
           lapply(files,
                  function(file) {
                    data.frame(
-                     Coverage = sprintf("%.2f", sum(file$coverage > 0) / sum(file$coverage != "") * 100),
-                     Lines = NROW(file),
-                     Relevant = sum(file$coverage != ""),
-                     Covered = sum(file$coverage > 0),
-                     Missed = sum(file$coverage == 0),
-                     `Hits / Line` = sprintf("%.0f", sum(as.numeric(file$coverage), na.rm = TRUE) / sum(file$coverage != "")),
+                     Usage = sprintf("%.2f", (sum(file$usage != "") - sum(file$usage > 0)) / sum(file$usage != "") * 100),
+                     'Relevant Symbols' = sum(file$usage != ""),
+                     'Valid Symbols' = sum(file$usage != "") - sum(as.numeric(file$usage[(file$usage > 0)])),
+                     'Problem Symbols' = sum(as.numeric(file$usage[(file$usage > 0)])),
+                      General = sum(file$usage_type$Freq[file$usage_type$Var2=='general']),           
+                     'Missing Global' = sum(file$usage_type$Freq[file$usage_type$Var2=='no_global_binding']),                     
+                     'Unused Local' = sum(file$usage_type$Freq[file$usage_type$Var2=='unused_local']),
                      stringsAsFactors = FALSE,
                      check.names = FALSE)
                  }
@@ -101,9 +116,9 @@ compute_file_stats <- function(files) {
   )
 }
 
-sort_file_stats <- function(stats) {
-  stats[order(as.numeric(stats$Coverage), -stats$Relevant),
-        c("Coverage", "File", "Lines", "Relevant", "Covered", "Missed", "Hits / Line")]
+sort_file_stats_ <- function(stats) {
+  stats[order(as.numeric(stats$Usage), -stats$Relevant),
+        c("Usage", "File", "Relevant Symbols","Valid Symbols", "Problem Symbols",'General','Missing Global','Unused Local')]
 }
 
 add_link <- function(files) {
@@ -116,7 +131,7 @@ add_color_box <- function(nums) {
   
   vcapply(nums, function(num) {
     nnum <- as.numeric(num)
-    if (nnum > 90) {
+    if (nnum == 100) {
       as.character(shiny::div(class = "coverage-box coverage-high", num))
     } else if (nnum > 75) {
       as.character(shiny::div(class = "coverage-box coverage-medium", num))
@@ -133,30 +148,40 @@ renderSourceTable <- function(data) {
                     shiny::tags$div(id = file, class="hidden",
                                     shiny::tags$table(class = "table-condensed",
                                                       shiny::tags$tbody(
-                                                        lapply(seq_len(NROW(lines)),
+                                                        lapply(seq_len(NROW(lines$line)),
                                                                function(row_num) {
-                                                                 coverage <- lines[row_num, "coverage"]
+                                                                 usage <- lines$usage[row_num]
                                                                  
                                                                  cov_type <- NULL
-                                                                 if (coverage == 0) {
+                                                                 if (usage == 0) {
                                                                    cov_value <- "!"
-                                                                   cov_type <- "missed"
-                                                                 } else if (coverage > 0) {
-                                                                   cov_value <- shiny::HTML(paste0(lines[row_num, "coverage"], "<em>x</em>", collapse = ""))
-                                                                   cov_type <- "covered"
+                                                                   cov_type <- "passed"
+                                                                 } else if (usage > 0) {
+                                                                   cov_value <- shiny::HTML(paste0(lines$usage[row_num], "<em>x</em>", collapse = ""))
+                                                                   
+                                                                   ctype <- unique(lines$usage_type$Var2[lines$usage_type$Var1==row_num&lines$usage_type$Freq>0])
+                                                                   
+                                                                   if(length(ctype)>1)
+                                                                     ctype <- 'mix'
+                                                                   
+                                                                   cov_type <- ctype
+                                                                   
                                                                  } else {
                                                                    cov_type <- "never"
                                                                    cov_value <- ""
                                                                  }
                                                                  shiny::tags$tr(class = cov_type,
-                                                                                shiny::tags$td(class = "num", lines[row_num, "line"]),
-                                                                                shiny::tags$td(class = "col-sm-12", shiny::pre(class = "language-r", lines[row_num, "source"])),
+                                                                                shiny::tags$td(class = "num", lines$line[row_num]),
+                                                                                shiny::tags$td(class = "col-sm-12", shiny::pre(class = "language-r", lines$source[row_num])),
                                                                                 shiny::tags$td(class = "coverage", cov_value)
                                                                  )
                                                                })
                                                       )
                                     ))
-                  }, lines = data, file = names(data)),
+                  }, 
+                  lines = data,
+                  file = names(data)
+                  ),
                   shiny::tags$script(
                     "$('div#files pre').each(function(i, block) {
                     hljs.highlightBlock(block);

@@ -5,6 +5,8 @@ as_dataframe <- function(x){
 
   msg <- gsub('\\n$','',gsub(' \\((.*?)$','',x_))
 
+  msg_type <- warn_type(gsub('\u2018(.*?)\u2019','',msg))
+ 
   object <- gsub('^(.*?)\u2018|\u2019(.*?)$','',msg)
 
   x__ <- gsub('\\n$','',gsub('^(.*?) \\(|\\)$','',x_))
@@ -48,6 +50,7 @@ as_dataframe <- function(x){
    line2            = line2,
    fun              = fun,
    object           = object,
+   warning_type     = msg_type,
    warning          = msg,
    stringsAsFactors = FALSE)
 

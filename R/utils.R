@@ -58,3 +58,25 @@ parse_package <- function(x){
   
   ret
 }
+
+'%||%' <- function (x, y) 
+{
+  if (is.null(x)) {
+    y
+  }
+  else {
+    x
+  }
+}
+
+warn_type <- function(x){
+  
+  if(!grepl('global|local',x))
+    return('general')
+  
+  if(grepl('global',x))
+    return('no_global_binding')
+  
+  if(grepl('local',x))
+    return('unused_local')
+}

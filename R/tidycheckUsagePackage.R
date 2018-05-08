@@ -29,10 +29,9 @@ tidycheckUsagePackage <- function(pack,...){
       xx$col2 <- ''
       xx <- xx[,c('file','line','object','col1','col2','path','fun','warning')]
     }
+    attr(xx,'package') <- pack
   }
 
-  attr(xx,'package') <- pack
-  
   return(xx)
 }
 
