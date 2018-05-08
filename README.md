@@ -86,3 +86,28 @@ tidycheckUsage(fun = myfun)
 |     |4    |mutate |5    |10   |     |myfun |no visible global function definition for ‘mutate’ |
 |     |6    |%>%    |13   |15   |     |myfun |no visible global function definition for ‘%>%’    |
 |     |7    |mpg2   |24   |27   |     |myfun |no visible binding for global variable ‘mpg2’      |
+
+## HTML Report outputs
+
+Forking `covr::report` a similar output is created for symbol usage in `R` scripts.
+
+### Summary statistics for symbol usage
+
+Number of relevant symbols are counted then categorized by usage warnings:
+
+  - Valid symbols (no warnings or notes)
+  - Problem symbols that generate warnings in `codetools`
+    - General: Neither Missing Global or Unused Local
+    - Missing Global: symbols that generate a warning: 'no visible binding for global variable'
+    - Unused Local: symbols that generate a warning: 'local variable is assigned but may not be used'
+
+![](https://github.com/yonicd/tidycheckUsage/blob/covr_report/Misc/Images/frontmatter.png?raw=true)
+
+### Within Script Investigations
+
+#### Red indicates no visible binding for global variable
+![](https://github.com/yonicd/tidycheckUsage/blob/covr_report/Misc/Images/missing_global.png?raw=true)
+
+
+#### Orange indicates local variable is assigned but may not be used
+![](https://github.com/yonicd/tidycheckUsage/blob/covr_report/Misc/Images/unused_local.png?raw=true)

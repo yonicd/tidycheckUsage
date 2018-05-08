@@ -18,7 +18,7 @@ tidycheckUsagePackage <- function(pack,...){
     library(pack,character.only = TRUE)
 
   codetools::checkUsagePackage(pack,report=as_dataframe,...)
-  
+
   if(!is.null(xx)){
     if(nzchar(xx$file[1])){
       xx <- parse_package(xx)
@@ -29,7 +29,12 @@ tidycheckUsagePackage <- function(pack,...){
       xx$col2 <- ''
       xx <- xx[,c('file','line','object','col1','col2','path','fun','warning')]
     }
+    attr(xx,'package') <- pack
   }
-  
+
   return(xx)
+}
+
+get_pack_name <- function(x) {
+  attr(x, "package") %||% "checkUsage"
 }

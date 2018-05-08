@@ -1,0 +1,4 @@
+Name: Calculate package usage coverage
+Description: Calculates the package usage and opens a report, using `tidycheckUsage::report()`
+Binding: addin_report
+Interactive: false
