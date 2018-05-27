@@ -156,4 +156,4 @@ NULL
 x1()
 ```
 
-![](https://github.com/yonicd/tidycheckUsage/blob/covr_report/Misc/Images/rlang_example.png?raw=true)
+![](https://github.com/yonicd/tidycheckUsage/blob/master/Misc/Images/rlang_example.png?raw=true)
