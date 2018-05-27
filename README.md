@@ -105,16 +105,16 @@ Number of relevant symbols are counted then categorized by usage warnings:
     - Missing Global: symbols that generate a warning: 'no visible binding for global variable'
     - Unused Local: symbols that generate a warning: 'local variable is assigned but may not be used'
 
-![](https://github.com/yonicd/tidycheckUsage/blob/covr_report/Misc/Images/frontmatter.png?raw=true)
+![](https://github.com/yonicd/tidycheckUsage/blob/master/Misc/Images/frontmatter.png?raw=true)
 
 ### Within Script Investigations
 
 #### Red indicates no visible binding for global variable
-![](https://github.com/yonicd/tidycheckUsage/blob/covr_report/Misc/Images/missing_global.png?raw=true)
+![](https://github.com/yonicd/tidycheckUsage/blob/master/Misc/Images/missing_global.png?raw=true)
 
 
 #### Orange indicates local variable is assigned but may not be used
-![](https://github.com/yonicd/tidycheckUsage/blob/covr_report/Misc/Images/unused_local.png?raw=true)
+![](https://github.com/yonicd/tidycheckUsage/blob/master/Misc/Images/unused_local.png?raw=true)
 
 
 ## Appending `rlang`
