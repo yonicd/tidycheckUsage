@@ -15,9 +15,10 @@ tidycheckUsage(fun, ...)
 data.frame
 }
 \description{
-FUNCTION_DESCRIPTION
+evaluates checkUsage and returns a tidy output
 }
 \examples{
+\donttest{
 myfun <- function(x){
 
 ret <- mtcars\%>\%
@@ -29,7 +30,7 @@ ret <- ret\%>\%
 }
 
 tidycheckUsage(fun = myfun)
-
+}
 }
 \seealso{
 \code{\link[codetools]{checkUsage}}

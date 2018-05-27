@@ -1,11 +1,11 @@
-#' @title FUNCTION_TITLE
-#' @description FUNCTION_DESCRIPTION
+#' @title run tidycheckUsage on an installed package
+#' @description Evaluates tidycheckUsage on entire package
 #' @param pack character, name of package to check.
 #' @param ... options to be passed to checkUsage.
 #' @return data.frame
 #' @seealso 
 #'  \code{\link[codetools]{checkUsage}}
-#' @rdname checkUsagePackagedf
+#' @rdname tidycheckUsagePackage
 #' @export 
 #' @importFrom codetools checkUsagePackage
 tidycheckUsagePackage <- function(pack,...){
@@ -29,6 +29,10 @@ tidycheckUsagePackage <- function(pack,...){
       xx$col2 <- ''
       xx <- xx[,c('file','line','object','col1','col2','path','fun','warning')]
     }
+    
+    xx$line <- as.numeric(xx$line)
+    xx <- xx[order(xx$file,xx$line),]
+    
     attr(xx,'package') <- pack
   }
 

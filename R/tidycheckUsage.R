@@ -1,9 +1,10 @@
 #' @title return checkUsage as data.frame
-#' @description FUNCTION_DESCRIPTION
+#' @description evaluates checkUsage and returns a tidy output
 #' @param fun closure, function to check
 #' @param ... options to be passed to checkUsage
 #' @return data.frame
 #' @examples 
+#' \donttest{
 #' myfun <- function(x){
 #' 
 #' ret <- mtcars%>%
@@ -15,10 +16,10 @@
 #' }
 #' 
 #' tidycheckUsage(fun = myfun)
-#' 
+#' }
 #' @seealso 
 #'  \code{\link[codetools]{checkUsage}}
-#' @rdname checkUsagedf
+#' @rdname tidycheckUsage
 #' @export 
 #' @importFrom codetools checkUsage
 #' @importFrom utils capture.output
@@ -47,6 +48,9 @@ tidycheckUsage <- function(fun,...){
     }
     
       xx      <- parse_package(xx)
+      xx$line <- as.numeric(xx$line)
+      
+      xx <- xx[order(xx$file,xx$line),]
       
       if(flag){
         xx$file <- ''

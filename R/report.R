@@ -6,10 +6,13 @@
 #' @examples
 #' \dontrun{
 #' x <- tidycheckUsagePackage()
-#' report(x)
+#' usage_report(x)
 #' }
 #' @export
-report <- function(x = tidycheckUsagePackage(),
+#' @importFrom DT datatable
+#' @import shiny
+#' @rdname usage_report
+usage_report <- function(x = tidycheckUsagePackage(),
                    file = file.path(tempdir(), paste0(get_pack_name(x), "-report.html")),
                    browse = interactive()) {
   
@@ -188,6 +191,8 @@ renderSourceTable <- function(data) {
 });"))
 }
 
+#' @importFrom htmltools htmlDependency attachDependencies
+#' @importFrom htmltools attachDependencies htmlDependencies
 addHighlight <- function(x = list()) {
   highlight <- htmltools::htmlDependency("highlight.js", "6.2",
                                          system.file(package = "shiny",
@@ -198,10 +203,11 @@ addHighlight <- function(x = list()) {
   htmltools::attachDependencies(x, c(htmltools::htmlDependencies(x), list(highlight)))
 }
 
+#' @importFrom rstudioapi getActiveProject
 addin_report <- function() {
   loadNamespace("rstudioapi")
   
   project <- rstudioapi::getActiveProject()
   
-  tidycheckUsage::report(tidycheckUsage::checkUsagePackage_dataframe(project %||% getwd()))
+  usage_report(checkUsagePackage(project %||% getwd()))
 }

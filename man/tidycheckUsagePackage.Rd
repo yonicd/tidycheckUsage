@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidycheckUsagePackage.R
 \name{tidycheckUsagePackage}
 \alias{tidycheckUsagePackage}
-\title{FUNCTION_TITLE}
+\title{run tidycheckUsage on an installed package}
 \usage{
 tidycheckUsagePackage(pack, ...)
 }
@@ -15,7 +15,7 @@ tidycheckUsagePackage(pack, ...)
 data.frame
 }
 \description{
-FUNCTION_DESCRIPTION
+Evaluates tidycheckUsage on entire package
 }
 \seealso{
 \code{\link[codetools]{checkUsage}}
