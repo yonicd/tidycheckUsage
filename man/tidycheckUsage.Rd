@@ -17,6 +17,10 @@ data.frame
 \description{
 evaluates checkUsage and returns a tidy output
 }
+\details{
+by default the skipWith arguments of checkUsagePackage
+is set to TRUE to mimic the devtools::check() function.
+}
 \examples{
 \donttest{
 myfun <- function(x){

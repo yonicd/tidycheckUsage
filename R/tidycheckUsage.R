@@ -3,6 +3,8 @@
 #' @param fun closure, function to check
 #' @param ... options to be passed to checkUsage
 #' @return data.frame
+#' @details by default the skipWith arguments of checkUsagePackage
+#' is set to TRUE to mimic the devtools::check() function.
 #' @examples 
 #' \donttest{
 #' myfun <- function(x){
@@ -29,7 +31,18 @@ tidycheckUsage <- function(fun,...){
 
   breadcrumb__ <- TRUE
   
-  codetools::checkUsage(fun,report=as_dataframe,...)
+  args  <- list(...)
+  
+  args$report <- as_dataframe
+  args$fun <- fun
+  
+  if(!'skipWith'%in%names(args)){
+    
+    args$skipWith <- TRUE
+    
+  }
+  
+  do.call(codetools::checkUsage,args)
 
   if(!is.null(xx)){
     

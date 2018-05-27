@@ -141,7 +141,7 @@ tidycheckUsage(x)
 5         5   qsec   53   56        x no_global_binding  no visible binding for global variable ‘qsec’
 6         5  vs_am   65   69        x no_global_binding no visible binding for global variable ‘vs_am’
 
-(x1 <- append_rlang(x))
+(x1 <- append_rlang(x)) 
 function () 
 {
     data <- tidyr::unite(mtcars, col = !!rlang::sym('vs_am'), c(!!rlang::sym('vs'), !!rlang::sym('am')))

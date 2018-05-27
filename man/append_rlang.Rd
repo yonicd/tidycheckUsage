@@ -4,10 +4,14 @@
 \alias{append_rlang}
 \title{Append rlang !!sym}
 \usage{
-append_rlang(.f)
+append_rlang(.f, unquo_type = c("UQ", "!!"), ...)
 }
 \arguments{
 \item{.f}{function}
+
+\item{unquo_type}{character, unquo type, Default: 'UQ'}
+
+\item{...}{options to be passed to checkUsage.}
 }
 \value{
 function
@@ -21,7 +25,7 @@ x <- function(){
   
   data <- tidyr::unite(mtcars, col = vs_am, c(vs,am))
   
-  ggplot2::ggplot(data = data, ggplot2::aes(x=mpg,y=qsec,colour=vs_am)) + 
+  ggplot2::ggplot(data = data, ggplot2::aes(x=mpg^2,y=qsec,colour=vs_am)) + 
     ggplot2::geom_point()
 }
 

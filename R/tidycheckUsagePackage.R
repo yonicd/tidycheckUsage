@@ -3,6 +3,8 @@
 #' @param pack character, name of package to check.
 #' @param ... options to be passed to checkUsage.
 #' @return data.frame
+#' @details by default the skipWith arguments of checkUsagePackage
+#' is set to TRUE to mimic the devtools::check() function.
 #' @seealso 
 #'  \code{\link[codetools]{checkUsage}}
 #' @rdname tidycheckUsagePackage
@@ -17,7 +19,18 @@ tidycheckUsagePackage <- function(pack,...){
   if(!pack%in%loadedNamespaces())
     library(pack,character.only = TRUE)
 
-  codetools::checkUsagePackage(pack,report=as_dataframe,...)
+  args  <- list(...)
+  
+  args$report <- as_dataframe
+  args$pack <- pack
+  
+  if(!'skipWith'%in%names(args)){
+    
+    args$skipWith <- TRUE
+    
+  }
+ 
+  do.call(codetools::checkUsagePackage,args)
 
   if(!is.null(xx)){
     if(nzchar(xx$file[1])){

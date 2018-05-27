@@ -17,6 +17,10 @@ data.frame
 \description{
 Evaluates tidycheckUsage on entire package
 }
+\details{
+by default the skipWith arguments of checkUsagePackage
+is set to TRUE to mimic the devtools::check() function.
+}
 \seealso{
 \code{\link[codetools]{checkUsage}}
 }
