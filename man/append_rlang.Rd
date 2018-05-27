@@ -17,19 +17,19 @@ Programatically append !!rlang::sym('[OBJECT]') to the body of a function
 }
 \examples{
 \dontrun{
-require(dplyr)
-
 x <- function(){
-  tidyr::unite(mtcars, col = vs_am, c(vs,am))\%>\%
-  ggplot2::ggplot(ggplot2::aes(x=mpg,y=qsec,colour=vs_am)) + 
-  ggplot2::geom_point()
+  
+  data <- tidyr::unite(mtcars, col = vs_am, c(vs,am))
+  
+  ggplot2::ggplot(data = data, ggplot2::aes(x=mpg,y=qsec,colour=vs_am)) + 
+    ggplot2::geom_point()
 }
 
-tidycheckUsage(x)
+tidycheckUsage::tidycheckUsage(x)
 
-(x1 <- append_rlang(x))
+(x1 <- tidycheckUsage::append_rlang(x))
 
-tidycheckUsage(x1)
+tidycheckUsage::tidycheckUsage(x1)
 
 x1()
 }

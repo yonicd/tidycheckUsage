@@ -124,28 +124,29 @@ More often than not when a `missing global` pops up it ussually means that you a
 To help make this painless the output from `tidycheckUsage` is used to find and replace all those objects.
 
 ```r
-require(dplyr)
-
 x <- function(){
-   tidyr::unite(mtcars, col = vs_am, c(vs,am))%>%
-   ggplot2::ggplot(ggplot2::aes(x=mpg,y=qsec,colour=vs_am)) + 
-   ggplot2::geom_point()
- }
+  
+  data <- tidyr::unite(mtcars, col = vs_am, c(vs,am))
+  
+  ggplot2::ggplot(data = data, ggplot2::aes(x=mpg,y=qsec,colour=vs_am)) + 
+  ggplot2::geom_point()
+}
 
 tidycheckUsage(x)
   file line object col1 col2 path fun      warning_type                                        warning
-1         2     am   42   43        x no_global_binding    no visible binding for global variable ‘am’
-2         2     vs   39   40        x no_global_binding    no visible binding for global variable ‘vs’
-3         2  vs_am   30   34        x no_global_binding no visible binding for global variable ‘vs_am’
-5         3    mpg   34   36        x no_global_binding   no visible binding for global variable ‘mpg’
-6         3   qsec   40   43        x no_global_binding  no visible binding for global variable ‘qsec’
-7         3  vs_am   52   56        x no_global_binding no visible binding for global variable ‘vs_am’
+1         3     am   50   51        x no_global_binding    no visible binding for global variable ‘am’
+2         3     vs   47   48        x no_global_binding    no visible binding for global variable ‘vs’
+3         3  vs_am   38   42        x no_global_binding no visible binding for global variable ‘vs_am’
+4         5    mpg   47   49        x no_global_binding   no visible binding for global variable ‘mpg’
+5         5   qsec   53   56        x no_global_binding  no visible binding for global variable ‘qsec’
+6         5  vs_am   65   69        x no_global_binding no visible binding for global variable ‘vs_am’
 
 (x1 <- append_rlang(x))
 function () 
 {
-    tidyr::unite(mtcars, col = !!rlang::sym('vs_am'), c(!!rlang::sym('vs'), !!rlang::sym('am'))) %>% ggplot2::ggplot(ggplot2::aes(x = !!rlang::sym('mpg'), 
-        y = !!rlang::sym('qsec'), colour = !!rlang::sym('vs_am'))) + ggplot2::geom_point()
+    data <- tidyr::unite(mtcars, col = !!rlang::sym('vs_am'), c(!!rlang::sym('vs'), !!rlang::sym('am')))
+    ggplot2::ggplot(data = data, ggplot2::aes(x = !!rlang::sym('mpg'), y = !!rlang::sym('qsec'), 
+        colour = !!rlang::sym('vs_am'))) + ggplot2::geom_point()
 }
 <environment: 0x10ceb96d8>
 
