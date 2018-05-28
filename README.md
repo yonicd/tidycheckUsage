@@ -121,7 +121,7 @@ Number of relevant symbols are counted then categorized by usage warnings:
 
 Now we can use this information to place `rlang` syntax instead of calling the object itself within a `tidyverse` call.
 
-To help make this painless the output from `tidycheckUsage` is used to find and replace all those objects. This can be done with `append_rlang` for functions or directly to package script on disk with `append_rlang_package`.
+To help make this painless the output from `tidycheckUsage` is used to find and replace all those objects. This can be done with the tidy object and `append_rlang`, for either small functions or whole packages.
 
 ```r
 x <- function(){
