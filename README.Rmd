@@ -15,11 +15,12 @@ knitr::opts_chunk$set(
 
 # tidycheckUsage
 
-When using magrittr pipes or ggplot2 reading the objects that you forgot to `enquo` is a pain. These functions can be run prior to `devtools::check` to return a `data.frame` containing all the warnings created when `check` runs `codetools::checkUsage`.
+When using `magrittr` pipes or `ggplot2` reading the objects that you forgot
+to `enquo` is a pain. These functions can be run prior to
+`devtools::check` to return a `data.frame` containing all the warnings
+created when `check` runs `codetools::checkUsage`. Using this information actionable functions append `rlang` syntax to fix the warnings.
 
 ## Installation
-
-You can install tidynm from ghe with:
 
 ```{r gh-installation, eval = FALSE}
 remotes::install_github('yonicd/tidycheckUsage')

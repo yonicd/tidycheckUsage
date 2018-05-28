@@ -1,16 +1,16 @@
-
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 # tidycheckUsage
 
 When using magrittr pipes or ggplot2 reading the objects that you forgot
 to `enquo` is a pain. These functions can be run prior to
 `devtools::check` to return a `data.frame` containing all the warnings
-created when `check` runs `codetools::checkUsage`. Using this information actionable functions append `rlang` syntax to fix the warnings.
+created when `check` runs `codetools::checkUsage`. Using this information actionable functions [append `rlang`](#appending-rlang) syntax to fix the warnings.
+
+  1. [Installation](#Installation)
+  1. [Examples](#examples)
+  1. [Reports](#html-report-outputs)
+  1. [Tidyverse Warning Resolution](#appending-rlang)
 
 ## Installation
-
-You can install tidynm from ghe with:
 
 ``` r
 remotes::install_github('yonicd/tidycheckUsage')
@@ -132,7 +132,7 @@ x <- function(){
   ggplot2::geom_point()
 }
 
-tidycheckUsage(x)
+(obj <- tidycheckUsage(x))
   file line object col1 col2 path fun      warning_type                                        warning
 1         3     am   50   51        x no_global_binding    no visible binding for global variable ‘am’
 2         3     vs   47   48        x no_global_binding    no visible binding for global variable ‘vs’
@@ -141,7 +141,7 @@ tidycheckUsage(x)
 5         5   qsec   53   56        x no_global_binding  no visible binding for global variable ‘qsec’
 6         5  vs_am   65   69        x no_global_binding no visible binding for global variable ‘vs_am’
 
-(x1 <- append_rlang(x)) 
+(x1 <- append_rlang(obj)) 
 function () 
 {
     data <- tidyr::unite(mtcars, col = !!rlang::sym('vs_am'), c(!!rlang::sym('vs'), !!rlang::sym('am')))

@@ -2,12 +2,18 @@
 % Please edit documentation in R/append_rlang.R
 \name{append_rlang}
 \alias{append_rlang}
+\alias{append_rlang.function_usage}
+\alias{append_rlang.package_usage}
 \title{Append rlang !!sym}
 \usage{
-append_rlang(.f, unquo_type = c("UQ", "!!"), ...)
+append_rlang(obj, unquo_type = c("UQ", "!!"), ...)
+
+\method{append_rlang}{function_usage}(obj, unquo_type = c("UQ", "!!"), ...)
+
+\method{append_rlang}{package_usage}(obj, unquo_type = c("UQ", "!!"), ...)
 }
 \arguments{
-\item{.f}{function}
+\item{obj}{function}
 
 \item{unquo_type}{character, unquo type, Default: 'UQ'}
 
@@ -29,9 +35,9 @@ x <- function(){
     ggplot2::geom_point()
 }
 
-tidycheckUsage::tidycheckUsage(x)
+obj <- tidycheckUsage::tidycheckUsage(x)
 
-(x1 <- tidycheckUsage::append_rlang(x))
+(x1 <- tidycheckUsage::append_rlang(obj))
 
 tidycheckUsage::tidycheckUsage(x1)
 

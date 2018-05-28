@@ -72,6 +72,10 @@ tidycheckUsage <- function(fun,...){
       
     }
   
-    
+  if(!is.null(xx)){
+    attr(xx,'class') <- c('data.frame','function_usage')
+    attr(xx,'src' ) <- fun
+  }
+  
   return(xx)
 }

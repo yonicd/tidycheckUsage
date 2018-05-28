@@ -1,6 +1,6 @@
 #' @title Append rlang !!sym
 #' @description Programatically append !!rlang::sym('[OBJECT]') to the body of a function
-#' @param .f function
+#' @param obj function
 #' @param unquo_type character, unquo type, Default: 'UQ'
 #' @param ... options to be passed to checkUsage.
 #' @return function
@@ -14,9 +14,9 @@
 #'     ggplot2::geom_point()
 #' }
 #' 
-#' tidycheckUsage::tidycheckUsage(x)
+#' obj <- tidycheckUsage::tidycheckUsage(x)
 #' 
-#' (x1 <- tidycheckUsage::append_rlang(x))
+#' (x1 <- tidycheckUsage::append_rlang(obj))
 #' 
 #' tidycheckUsage::tidycheckUsage(x1)
 #' 
@@ -24,29 +24,72 @@
 #' }
 #' @rdname append_rlang
 #' @export 
+append_rlang <- function(obj,unquo_type = c('UQ','!!'),...){
+  UseMethod("append_rlang")
+}
 
-append_rlang <- function(.f,unquo_type = c('UQ','!!'),...){
+
+#' @rdname append_rlang
+#' @export 
+append_rlang.function_usage <- function(obj,unquo_type = c('UQ','!!'),...){
   
   if(all(unquo_type == c('UQ','!!'))){
-    unquo_type = 'UQ'
+    unquo_type <- 'UQ'
   }
   
-  fd <- deparse(.f)
+  fd <- capture.output(attr(obj,'src'))
   
-  x <- tidycheckUsage(fun=eval(parse(text=fd)),...)
-  
-  x$rlang <- x$object
+  obj$rlang <- obj$object
   
   fill <-switch(unquo_type,
                 'UQ' = {"rlang::UQ(rlang::sym('%s'))"},
                 '!!' = {"(!!rlang::sym('%s'))"}
   )
   
-  x$rlang[x$warning_type=='no_global_binding'] <- 
-    sprintf(fill,x$object[x$warning_type=='no_global_binding'])
+  obj$rlang[obj$warning_type=='no_global_binding'] <- 
+    sprintf(fill,obj$object[obj$warning_type=='no_global_binding'])
   
-  for(i in 1:nrow(x))
-    fd[x$line[i]] <- gsub(sprintf('\\b%s\\b',x$object[i]),x$rlang[i],fd[x$line[i]])
+  for(i in 1:nrow(obj))
+    fd[obj$line[i]] <- gsub(sprintf('\\b%s\\b',obj$object[i]),obj$rlang[i],fd[obj$line[i]])
   
   eval(parse(text = fd))
+}
+
+#' @rdname append_rlang
+#' @export 
+
+append_rlang.package_usage <- function(obj, unquo_type = c('UQ','!!'), ...){
+  
+  if(all(unquo_type == c('UQ','!!'))){
+    unquo_type <- 'UQ'
+  }
+  
+  obj$rlang <- obj$object
+  
+  fill <-switch(unquo_type,
+                'UQ' = {"rlang::UQ(rlang::sym('%s'))"},
+                '!!' = {"(!!rlang::sym('%s'))"}
+  )
+  
+  obj$rlang[obj$warning_type=='no_global_binding'] <- 
+    sprintf(fill,obj$object[obj$warning_type=='no_global_binding'])
+  
+  FILES <- split(obj,obj$file)
+  
+  ret <- lapply(FILES,function(xx){
+    
+    fp <- file.path(xx$path[1],xx$file[1])
+    
+    fd <- readLines(fp)
+    
+    for(i in 1:nrow(xx))
+      fd[xx$line[i]] <- gsub(sprintf('\\b%s\\b',xx$object[i]),xx$rlang[i],fd[xx$line[i]]) 
+    
+    message(sprintf('Editing %s',fp))
+    
+    cat(fd,file=fp,sep = '\n')
+  })
+  
+  message(sprintf('Total files edited: %s', length(FILES)))
+  
 }

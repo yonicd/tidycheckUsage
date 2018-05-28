@@ -47,6 +47,7 @@ tidycheckUsagePackage <- function(pack,...){
     xx <- xx[order(xx$file,xx$line),]
     
     attr(xx,'package') <- pack
+    attr(xx,'class') <- c('data.frame','package_usage')
   }
 
   return(xx)
