@@ -6,7 +6,7 @@
 When using magrittr pipes or ggplot2 reading the objects that you forgot
 to `enquo` is a pain. These functions can be run prior to
 `devtools::check` to return a `data.frame` containing all the warnings
-created when `check` runs `codetools::checkUsage`.
+created when `check` runs `codetools::checkUsage`. Using this information actionable functions append `rlang` syntax to fix the warnings.
 
 ## Installation
 
@@ -119,9 +119,9 @@ Number of relevant symbols are counted then categorized by usage warnings:
 
 ## Appending `rlang`
 
-More often than not when a `missing global` pops up it ussually means that you are using [non-standard evaluation](http://adv-r.had.co.nz/Computing-on-the-language.html) and need to place `rlang` syntax instead of calling the object itself within a `tidyverse` call.
+Now we can use this information to place `rlang` syntax instead of calling the object itself within a `tidyverse` call.
 
-To help make this painless the output from `tidycheckUsage` is used to find and replace all those objects.
+To help make this painless the output from `tidycheckUsage` is used to find and replace all those objects. This can be done with `append_rlang` for functions or directly to package script on disk with `append_rlang_package`.
 
 ```r
 x <- function(){
