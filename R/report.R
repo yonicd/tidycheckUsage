@@ -202,12 +202,3 @@ addHighlight <- function(x = list()) {
   
   htmltools::attachDependencies(x, c(htmltools::htmlDependencies(x), list(highlight)))
 }
-
-#' @importFrom rstudioapi getActiveProject
-addin_report <- function() {
-  loadNamespace("rstudioapi")
-  
-  project <- rstudioapi::getActiveProject()
-  
-  usage_report(checkUsagePackage(project %||% getwd()))
-}

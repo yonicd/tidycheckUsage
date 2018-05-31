@@ -2,3 +2,13 @@ Name: Calculate package usage coverage
 Description: Calculates the package usage and opens a report, using `tidycheckUsage::report()`
 Binding: addin_report
 Interactive: false
+
+Name: Wrap object in rlang symbol(s)
+Description: fix checkUsage warnings in tidyverse script with wrapping objects with rlang symbol(s)
+Binding: rlang_syms
+Interactive: false
+
+Name: Wrap object in data pronoun
+Description: fix checkUsage warnings in tidyverse script with wrapping objects with .data[['OBJECT']]
+Binding: rlang_data
+Interactive: false
