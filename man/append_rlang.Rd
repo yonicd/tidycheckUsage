@@ -8,9 +8,11 @@
 \usage{
 append_rlang(obj, unquo_type = c("UQ", "!!"), ...)
 
-\method{append_rlang}{function_usage}(obj, unquo_type = c("UQ", "!!"), ...)
+\method{append_rlang}{function_usage}(obj, unquo_type = c("UQ", "!!"),
+  ...)
 
-\method{append_rlang}{package_usage}(obj, unquo_type = c("UQ", "!!"), ...)
+\method{append_rlang}{package_usage}(obj, unquo_type = c("UQ", "!!"),
+  ...)
 }
 \arguments{
 \item{obj}{function}
