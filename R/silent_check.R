@@ -11,12 +11,11 @@
 #' @importFrom callr r_bg
 #' @importFrom devtools check
 silent_check <- function(...){
-  
-  callr::r_bg(function(){
+
+  callr::r_bg(function(...){
     on.exit({
-      if(nzchar(system('terminal-notifier -version',intern = TRUE))){
         result <- paste0(sapply(x,length),collapse = '|')
-        system(sprintf("echo 'Package Check is Done:\n%s' | terminal-notifier -sound default",result))}
+        system(sprintf("echo 'Package Check is Done:\n%s' | terminal-notifier -sound default",result))
     },
     add = TRUE) 
     x <- devtools::check(..., quiet = TRUE)
