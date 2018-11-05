@@ -1,6 +1,7 @@
 #' @title run tidycheckUsage on an installed package
 #' @description Evaluates tidycheckUsage on entire package
 #' @param pack character, name of package to check.
+#' @param markers boolean, invoke RStudio markers, Default: TRUE
 #' @param ... options to be passed to checkUsage.
 #' @return data.frame
 #' @details by default the skipWith arguments of checkUsagePackage
@@ -10,7 +11,7 @@
 #' @rdname tidycheckUsagePackage
 #' @export 
 #' @importFrom codetools checkUsagePackage
-tidycheckUsagePackage <- function(pack,...){
+tidycheckUsagePackage <- function(pack, markers = TRUE, ...){
 
   xx <- NULL
 
@@ -50,9 +51,17 @@ tidycheckUsagePackage <- function(pack,...){
     attr(xx,'class') <- c('data.frame','package_usage')
   }
 
-  make_marker(pack,xx)
+  if(interactive()){
+    if(markers){
+      make_marker(pack,xx)
+      return(invisible(xx))
+    }else{
+      return(xx)
+    }
+  }else{
+    return(xx)
+  }
   
-  return(invisible(xx))
 }
 
 get_pack_name <- function(x) {
