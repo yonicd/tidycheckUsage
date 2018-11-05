@@ -50,7 +50,9 @@ tidycheckUsagePackage <- function(pack,...){
     attr(xx,'class') <- c('data.frame','package_usage')
   }
 
-  return(xx)
+  make_marker(pack,xx)
+  
+  return(invisible(xx))
 }
 
 get_pack_name <- function(x) {

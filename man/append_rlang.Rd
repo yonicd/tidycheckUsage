@@ -6,18 +6,16 @@
 \alias{append_rlang.package_usage}
 \title{Append rlang !!sym}
 \usage{
-append_rlang(obj, unquo_type = c("UQ", "!!"), ...)
+append_rlang(obj, unquo_type = "!!", ...)
 
-\method{append_rlang}{function_usage}(obj, unquo_type = c("UQ", "!!"),
-  ...)
+\method{append_rlang}{function_usage}(obj, unquo_type = "!!", ...)
 
-\method{append_rlang}{package_usage}(obj, unquo_type = c("UQ", "!!"),
-  ...)
+\method{append_rlang}{package_usage}(obj, unquo_type = "!!", ...)
 }
 \arguments{
 \item{obj}{function}
 
-\item{unquo_type}{character, unquo type, Default: 'UQ'}
+\item{unquo_type}{character, unquo type, Default: '!!'}
 
 \item{...}{options to be passed to checkUsage.}
 }

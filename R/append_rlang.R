@@ -1,7 +1,7 @@
 #' @title Append rlang !!sym
 #' @description Programatically append !!rlang::sym('[OBJECT]') to the body of a function
 #' @param obj function
-#' @param unquo_type character, unquo type, Default: 'UQ'
+#' @param unquo_type character, unquo type, Default: '!!'
 #' @param ... options to be passed to checkUsage.
 #' @return function
 #' @examples 
@@ -24,27 +24,20 @@
 #' }
 #' @rdname append_rlang
 #' @export 
-append_rlang <- function(obj,unquo_type = c('UQ','!!'),...){
+append_rlang <- function(obj,unquo_type = '!!',...){
   UseMethod("append_rlang")
 }
 
 
 #' @rdname append_rlang
 #' @export 
-append_rlang.function_usage <- function(obj,unquo_type = c('UQ','!!'),...){
-  
-  if(all(unquo_type == c('UQ','!!'))){
-    unquo_type <- 'UQ'
-  }
+append_rlang.function_usage <- function(obj,unquo_type = '!!',...){
   
   fd <- capture.output(attr(obj,'src'))
   
   obj$rlang <- obj$object
   
-  fill <-switch(unquo_type,
-                'UQ' = {"rlang::UQ(rlang::sym('%s'))"},
-                '!!' = {"(!!rlang::sym('%s'))"}
-  )
+  fill <- "(!!rlang::sym('%s'))"
   
   obj$rlang[obj$warning_type=='no_global_binding'] <- 
     sprintf(fill,obj$object[obj$warning_type=='no_global_binding'])
@@ -58,18 +51,11 @@ append_rlang.function_usage <- function(obj,unquo_type = c('UQ','!!'),...){
 #' @rdname append_rlang
 #' @export 
 
-append_rlang.package_usage <- function(obj, unquo_type = c('UQ','!!'), ...){
-  
-  if(all(unquo_type == c('UQ','!!'))){
-    unquo_type <- 'UQ'
-  }
+append_rlang.package_usage <- function(obj, unquo_type = '!!', ...){
   
   obj$rlang <- obj$object
   
-  fill <-switch(unquo_type,
-                'UQ' = {"rlang::UQ(rlang::sym('%s'))"},
-                '!!' = {"(!!rlang::sym('%s'))"}
-  )
+  fill <- "(!!rlang::sym('%s'))"
   
   obj$rlang[obj$warning_type=='no_global_binding'] <- 
     sprintf(fill,obj$object[obj$warning_type=='no_global_binding'])
