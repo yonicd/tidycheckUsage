@@ -1,7 +1,7 @@
 make_marker <- function(pack,x){
 
   new_x <- x[,c('line','col1','path','file','warning')]
-  new_x$file <- file.path(new_x$path,new_x$file)
+  new_x$file <- normalizePath(file.path(new_x$path,new_x$file))
   new_x$path <- NULL
   names(new_x) <- c('line','column','file','message')
   new_x$type <- 'info'

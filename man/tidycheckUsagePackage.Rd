@@ -4,12 +4,12 @@
 \alias{tidycheckUsagePackage}
 \title{run tidycheckUsage on an installed package}
 \usage{
-tidycheckUsagePackage(pack, markers = TRUE, ...)
+tidycheckUsagePackage(pack, markers = FALSE, ...)
 }
 \arguments{
 \item{pack}{character, name of package to check.}
 
-\item{markers}{boolean, invoke RStudio markers, Default: TRUE}
+\item{markers}{boolean, invoke RStudio markers, Default: FALSE}
 
 \item{...}{options to be passed to checkUsage.}
 }
