@@ -62,8 +62,10 @@ tidycheckUsage <- function(fun,...){
     
       xx      <- parse_package(xx)
       xx$line <- as.numeric(xx$line)
+      xx$col1 <- as.numeric(xx$col1)
+      xx$col2 <- as.numeric(xx$col2)
       
-      xx <- xx[order(xx$file,xx$line),]
+      xx <- xx[order(xx$file,xx$line,xx$col1),]
       
       if(flag){
         xx$file <- ''

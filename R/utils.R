@@ -9,7 +9,7 @@ fetch_parsed <- function(y,x){
 
   LINES <- seq(as.numeric(y[1]),as.numeric(y[2]))
   
-  x[x$line1%in%LINES & x$line2%in%LINES&x$text==y[3]&grepl('^SPECIAL|^SYMBOL',x$token),]  
+  x[x$line1%in%LINES & x$line2%in%LINES&x$text==y[3]&grepl('^SPECIAL|^\\bSYMBOL\\b',x$token),]  
 }
 
 #' @importFrom utils getParseData

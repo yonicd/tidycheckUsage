@@ -42,9 +42,8 @@ append_rlang.function_usage <- function(obj,unquo_type = '!!',...){
   obj$rlang[obj$warning_type=='no_global_binding'] <- 
     sprintf(fill,obj$object[obj$warning_type=='no_global_binding'])
   
-  for(i in 1:nrow(obj))
-    fd[obj$line[i]] <- gsub(sprintf('\\b%s\\b',obj$object[i]),obj$rlang[i],fd[obj$line[i]])
-  
+  fd <- shift(obj,fd)
+
   eval(parse(text = fd))
 }
 
@@ -67,10 +66,9 @@ append_rlang.package_usage <- function(obj, unquo_type = '!!', ...){
     fp <- file.path(xx$path[1],xx$file[1])
     
     fd <- readLines(fp)
-    
-    for(i in 1:nrow(xx))
-      fd[xx$line[i]] <- gsub(sprintf('\\b%s\\b',xx$object[i]),xx$rlang[i],fd[xx$line[i]]) 
-    
+
+    fd <- shift(xx,fd)
+
     message(sprintf('Editing %s',fp))
     
     cat(fd,file=fp,sep = '\n')
