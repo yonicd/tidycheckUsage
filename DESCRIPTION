@@ -1,12 +1,12 @@
 Package: tidycheckUsage
 Title: Tidy Output of checkUsage from codetools Package
-Version: 0.0.1
+Version: 0.0.2
 Authors@R: person("Jonathan", "Sidi", email = "yonicd@gmail.com", role = c("aut", "cre"))
 Description: Returns tidy data.frame of checkUsage and checkUsagePackage from the codetools pacakge.
 Depends: R (>= 3.3.3)
-Imports: shiny,DT,htmltools,utils,rstudioapi,codetools,devtools,callr
+Imports: shiny,DT,htmltools,utils,rstudioapi,codetools,rcmdcheck,callr,stringi
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 Suggests: testthat

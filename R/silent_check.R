@@ -1,15 +1,15 @@
-#' @title Run devtools::check in a backaground session
-#' @description Run \code{\link[devtools]{check}} in another R session
-#' @param \dots Arguments to pass to \code{\link[devtools]{check}}
+#' @title Run rcmdcheck::rcmdcheck in a backaground session
+#' @description Run \code{\link[rcmdcheck]{rcmdcheck}} in another R session
+#' @param \dots Arguments to pass to \code{\link[rcmdcheck]{rcmdcheck}}
 #' @return An object containing errors, warnings, and notes.
 #' @details Silent option of devtools::check is foreced to TRUE.
 #' @seealso 
 #'  \code{\link[callr]{r_bg}}
-#'  \code{\link[devtools]{check}}
+#'  \code{\link[rcmdcheck]{rcmdcheck}}
 #' @rdname silent_check
 #' @export 
 #' @importFrom callr r_bg
-#' @importFrom devtools check
+#' @importFrom rcmdcheck rcmdcheck
 silent_check <- function(...){
 
   callr::r_bg(function(...){
@@ -18,7 +18,7 @@ silent_check <- function(...){
         system(sprintf("echo 'Package Check is Done:\n%s' | terminal-notifier -sound default",result))
     },
     add = TRUE) 
-    x <- devtools::check(..., quiet = TRUE)
+    x <- rcmdcheck::rcmdcheck(..., quiet = TRUE)
     x
   })
   

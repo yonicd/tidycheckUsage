@@ -1,8 +1,6 @@
 #' @title Append rlang !!sym
 #' @description Programatically append !!rlang::sym('[OBJECT]') to the body of a function
-#' @param obj function
-#' @param unquo_type character, unquo type, Default: '!!'
-#' @param ... options to be passed to checkUsage.
+#' @param obj function_usage or package_usage class
 #' @return function
 #' @examples 
 #' \dontrun{
@@ -24,14 +22,14 @@
 #' }
 #' @rdname append_rlang
 #' @export 
-append_rlang <- function(obj,unquo_type = '!!',...){
+append_rlang <- function(obj){
   UseMethod("append_rlang")
 }
 
 
 #' @rdname append_rlang
 #' @export 
-append_rlang.function_usage <- function(obj,unquo_type = '!!',...){
+append_rlang.function_usage <- function(obj){
   
   fd <- capture.output(attr(obj,'src'))
   
@@ -42,16 +40,15 @@ append_rlang.function_usage <- function(obj,unquo_type = '!!',...){
   obj$rlang[obj$warning_type=='no_global_binding'] <- 
     sprintf(fill,obj$object[obj$warning_type=='no_global_binding'])
   
-  for(i in 1:nrow(obj))
-    fd[obj$line[i]] <- gsub(sprintf('\\b%s\\b',obj$object[i]),obj$rlang[i],fd[obj$line[i]])
-  
+  fd <- shift(obj,fd, nchar(fill) - 2)
+
   eval(parse(text = fd))
 }
 
 #' @rdname append_rlang
 #' @export 
 
-append_rlang.package_usage <- function(obj, unquo_type = '!!', ...){
+append_rlang.package_usage <- function(obj){
   
   obj$rlang <- obj$object
   
@@ -67,10 +64,9 @@ append_rlang.package_usage <- function(obj, unquo_type = '!!', ...){
     fp <- file.path(xx$path[1],xx$file[1])
     
     fd <- readLines(fp)
-    
-    for(i in 1:nrow(xx))
-      fd[xx$line[i]] <- gsub(sprintf('\\b%s\\b',xx$object[i]),xx$rlang[i],fd[xx$line[i]]) 
-    
+
+    fd <- shift(xx,fd,nchar(fill) - 2)
+
     message(sprintf('Editing %s',fp))
     
     cat(fd,file=fp,sep = '\n')
