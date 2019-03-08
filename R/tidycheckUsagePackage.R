@@ -18,8 +18,8 @@ tidycheckUsagePackage <- function(pack, markers = FALSE, ...){
   breadcrumb__ <- TRUE
   
   if(!pack%in%loadedNamespaces())
-    library(pack,character.only = TRUE)
-
+    loadNamespace(pack)
+    
   args  <- list(...)
   
   args$report <- as_dataframe

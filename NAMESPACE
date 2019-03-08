@@ -2,6 +2,7 @@
 
 S3method(append_rlang,function_usage)
 S3method(append_rlang,package_usage)
+export("%||%")
 export(append_rlang)
 export(silent_check)
 export(tidycheckUsage)

@@ -59,7 +59,14 @@ parse_package <- function(x){
   ret
 }
 
-'%||%' <- function (x, y) 
+
+#' @title Default NULL
+#' @description Infix function to replace NULLs
+#' @param x,y If `x` is NULL, will return `y`; otherwise returns `x`.
+#' @rdname null-default
+#' @name null-default
+#' @export 
+`%||%` <- function (x, y) 
 {
   if (is.null(x)) {
     y

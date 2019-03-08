@@ -40,7 +40,9 @@ rlang_data <- function(){
 addin_report <- function() {
   loadNamespace("rstudioapi")
   
-  project <- rstudioapi::getActiveProject()
+  pack <- basename(rstudioapi::getActiveProject() %||% getwd())
   
-  usage_report(checkUsagePackage(project %||% getwd()))
+  loadNamespace(pack)
+  
+  usage_report(tidycheckUsagePackage(pack))
 }
