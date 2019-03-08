@@ -2,23 +2,23 @@
 % Please edit documentation in R/silent_check.R
 \name{silent_check}
 \alias{silent_check}
-\title{Run devtools::check in a backaground session}
+\title{Run rcmdcheck::rcmdcheck in a backaground session}
 \usage{
 silent_check(...)
 }
 \arguments{
-\item{\dots}{Arguments to pass to \code{\link[devtools]{check}}}
+\item{\dots}{Arguments to pass to \code{\link[rcmdcheck]{rcmdcheck}}}
 }
 \value{
 An object containing errors, warnings, and notes.
 }
 \description{
-Run \code{\link[devtools]{check}} in another R session
+Run \code{\link[rcmdcheck]{rcmdcheck}} in another R session
 }
 \details{
 Silent option of devtools::check is foreced to TRUE.
 }
 \seealso{
 \code{\link[callr]{r_bg}}
- \code{\link[devtools]{check}}
+ \code{\link[rcmdcheck]{rcmdcheck}}
 }
