@@ -45,7 +45,10 @@ tidycheckUsagePackage <- function(pack, markers = FALSE, ...){
     }
     
     xx$line <- as.numeric(xx$line)
-    xx <- xx[order(xx$file,xx$line),]
+    xx$col1 <- as.numeric(xx$col1)
+    xx$col2 <- as.numeric(xx$col2)
+    
+    xx <- xx[order(xx$file,xx$line,xx$col1),]
     
     attr(xx,'package') <- pack
     attr(xx,'class') <- c('data.frame','package_usage')
