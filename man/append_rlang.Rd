@@ -6,20 +6,22 @@
 \alias{append_rlang.package_usage}
 \title{Append rlang !!sym}
 \usage{
-append_rlang(obj)
+append_rlang(obj, template = "(!!sym('\%s'))")
 
-\method{append_rlang}{function_usage}(obj)
+\method{append_rlang}{function_usage}(obj, template = "(!!sym('\%s'))")
 
-\method{append_rlang}{package_usage}(obj)
+\method{append_rlang}{package_usage}(obj, template = "(!!sym('\%s'))")
 }
 \arguments{
 \item{obj}{function_usage or package_usage class}
+
+\item{template}{pattern to replace an object with, Default: "(!!sym('\%s'))"}
 }
 \value{
 function
 }
 \description{
-Programatically append !!rlang::sym('[OBJECT]') to the body of a function
+Programatically append template on objects to the body of a function
 }
 \examples{
 \dontrun{

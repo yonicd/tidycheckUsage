@@ -1,6 +1,7 @@
 #' @title Append rlang !!sym
-#' @description Programatically append !!rlang::sym('[OBJECT]') to the body of a function
+#' @description Programatically append template on objects to the body of a function
 #' @param obj function_usage or package_usage class
+#' @param template pattern to replace an object with, Default: "(!!sym('\%s'))"
 #' @return function
 #' @examples 
 #' \dontrun{
@@ -22,25 +23,23 @@
 #' }
 #' @rdname append_rlang
 #' @export 
-append_rlang <- function(obj){
+append_rlang <- function(obj, template = "(!!sym('%s'))"){
   UseMethod("append_rlang")
 }
 
 
 #' @rdname append_rlang
 #' @export 
-append_rlang.function_usage <- function(obj){
+append_rlang.function_usage <- function(obj, template = "(!!sym('%s'))"){
   
   fd <- capture.output(attr(obj,'src'))
   
   obj$rlang <- obj$object
-  
-  fill <- "(!!rlang::sym('%s'))"
-  
+
   obj$rlang[obj$warning_type=='no_global_binding'] <- 
-    sprintf(fill,obj$object[obj$warning_type=='no_global_binding'])
+    sprintf(template,obj$object[obj$warning_type=='no_global_binding'])
   
-  fd <- shift(obj,fd, nchar(fill) - 2)
+  fd <- shift(obj,fd, nchar(template) - 2)
 
   eval(parse(text = fd))
 }
@@ -48,14 +47,12 @@ append_rlang.function_usage <- function(obj){
 #' @rdname append_rlang
 #' @export 
 
-append_rlang.package_usage <- function(obj){
+append_rlang.package_usage <- function(obj, template = "(!!sym('%s'))"){
   
   obj$rlang <- obj$object
-  
-  fill <- "(!!rlang::sym('%s'))"
-  
+
   obj$rlang[obj$warning_type=='no_global_binding'] <- 
-    sprintf(fill,obj$object[obj$warning_type=='no_global_binding'])
+    sprintf(template,obj$object[obj$warning_type=='no_global_binding'])
   
   FILES <- split(obj,obj$file)
   
@@ -65,7 +62,7 @@ append_rlang.package_usage <- function(obj){
     
     fd <- readLines(fp)
 
-    fd <- shift(xx,fd,nchar(fill) - 2)
+    fd <- shift(xx,fd,nchar(template) - 2)
 
     message(sprintf('Editing %s',fp))
     
